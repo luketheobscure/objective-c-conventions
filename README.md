@@ -11,44 +11,50 @@ Unless explicitly contradicted below, assume that all of Apple's guidelines appl
 
  * All method declarations should be documented.
  * Comments should be hard-wrapped at 80 characters.
- * Comments should be [Tomdoc](http://tomdoc.org/)-style.
+ * Comments should be [Appledoc](http://gentlebytes.com/appledoc/)-style.
  * Document whether object parameters allow `nil` as a value.
- * Use `#pragma mark`s to categorize methods into functional groupings and protocol implementations, following this general structure:
+ * Use `#pragma mark -`s to categorize methods into functional groupings and protocol implementations, following this general structure:
+ * Use `#pragma mark`s to subcategorize methods when necessary:
 
 ```objc
-#pragma mark Properties
+#pragma mark - Properties
 
 @dynamic someProperty;
 
 - (void)setCustomProperty:(id)value {}
 
-#pragma mark Lifecycle
+#pragma mark Special Properties
+
+@dynamic someOtherProperty;
+
+
+#pragma mark - Lifecycle
 
 + (id)objectWithThing:(id)thing {}
 - (id)init {}
 
-#pragma mark Drawing
+#pragma mark - Drawing
 
 - (void)drawRect:(CGRect) {}
 
-#pragma mark Another functional grouping
+#pragma mark - Another functional grouping
 
-#pragma mark GHSuperclass
+#pragma mark - GHSuperclass
 
 - (void)someOverriddenMethod {}
 
-#pragma mark NSCopying
+#pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {}
 
-#pragma mark NSObject
+#pragma mark - NSObject
 
 - (NSString *)description {}
 ```
 
 ## Declarations
 
- * Never declare an ivar unless you need to change its type from its declared property.
+ * <del>Never declare an ivar unless you need to change its type from its declared property.</del> *(Let's discuss -Luke)*
  * Don’t use line breaks in method declarations.
  * Prefer exposing an immutable type for a property if it being mutable is an implementation detail. This is a valid reason to declare an ivar for a property.
  * Always declare memory-management semantics even on `readonly` properties.
@@ -78,7 +84,7 @@ void GHAwesomeFunction(BOOL hasSomeArgs);
 
 ## Expressions
 
- * Don't access an ivar unless you're in `-init`, `-dealloc` or a custom accessor.
+ * <del>Don't access an ivar unless you're in `-init`, `-dealloc` or a custom accessor.</del>
  * Use dot-syntax when invoking idempotent methods, including setters and class methods (like `NSFileManager.defaultManager`).
  * Use object literals, boxed expressions, and subscripting over the older, grosser alternatives.
  * Comparisons should be explicit for everything except `BOOL`s.
@@ -89,11 +95,11 @@ void GHAwesomeFunction(BOOL hasSomeArgs);
 Blah *a = (stuff == thing ? foo : bar);
 ```
 
-* Short form, `nil` coalescing ternary operators should avoid parentheses.
+* <del>Short form, `nil` coalescing ternary operators should avoid parentheses.
 
 ```objc
 Blah *b = thingThatCouldBeNil ?: defaultValue;
-```
+```</del>
 
  * Separate binary operands with a single space, but unary operands and casts with none:
 
@@ -179,6 +185,32 @@ NSDictionary *keyedShit = @{
 
 ## Categories
 
- * Categories should be named for the sort of functionality they provide. Don't create umbrella categories.
- * Category methods should always be prefixed.
- * If you need to expose private methods for subclasses or unit testing, create a class extension named `Class+Private`.
+ * <del>Categories should be named for the sort of functionality they provide. Don't create umbrella categories.</del>
+ * <del>Category methods should always be prefixed.</del>
+ * <del>If you need to expose private methods for subclasses or unit testing, create a class extension named `Class+Private`.</del>
+*(Let's discuss- I think categories are great, and can fill in a lot of missing functionality in the core libraries, but maybe we need to think through them a little bit more and have a good gameplan. -Luke)*
+
+##Legacy Specific Stuff
+
+* Don't ever do this:
+
+`@interface SomeViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>`
+
+* When what you actually want to do is this:
+
+`@interface SomeViewController : UITableViewController`
+
+* When working with SQLite, always use parameter binding for SQL sanitization. Example when using FMDB:
+
+`FMResultSet *siteQuery = [db executeQuery:@"select stuff where id = ?" withArgumentsInArray:@[siteID]];`
+
+* Don't ever do this (or use classes that do):
+
+`NSString *badQuery = [NSString stringWithFormat:@"select stuff where id = %@", siteID];`
+
+* Declare iVars in the implementation (.m) not the (.h)
+
+##Notifications VS. KVO
+
+* Prefer Key-Value-Observing when the event is occuring within a class that is a property of of the observing class
+* Prefer NSNotifications when no such relationship exists between the classes.
