@@ -109,11 +109,11 @@ void GHAwesomeFunction(BOOL hasSomeArgs);
 Blah *a = (stuff == thing ? foo : bar);
 ```
 
-* <del>Short form, `nil` coalescing ternary operators should avoid parentheses.
+* <del>Short form, `nil` coalescing ternary operators should avoid parentheses.</del>
 
 ```objc
 Blah *b = thingThatCouldBeNil ?: defaultValue;
-```</del>
+```
 
  * Separate binary operands with a single space, but unary operands and casts with none:
 
