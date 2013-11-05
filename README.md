@@ -228,3 +228,15 @@ NSDictionary *keyedShit = @{
 
 * Prefer Key-Value-Observing when the event is occuring within a class that is a property of of the observing class
 * Prefer NSNotifications when no such relationship exists between the classes.
+
+##Alerts
+* Use an enum in your class implementation if you need to keep track of the alert tag
+
+```
+typedef enum {
+    AlertDerp,
+    AlertHerp
+} AlertTag;
+```
+
+* Always set the delegate to nil if you don't need to handle it when it's dismissed
