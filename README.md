@@ -13,6 +13,7 @@ Unless explicitly contradicted below, assume that all of Apple's guidelines appl
 * [Categories](#categories)
 * [Legacy Specific Stuff](#legacy-specific-stuff)
 * [Notifications VS. KVO](#notifications-vs-kvo)
+* [Alerts](#alerts)
 
 
 ## Whitespace
