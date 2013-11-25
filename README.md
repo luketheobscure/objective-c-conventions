@@ -96,6 +96,13 @@ void GHAwesomeFunction(BOOL hasSomeArgs);
 ```objc
   CGRect rect = { .origin.x = 3.0, .origin.y = 12.0, .size.width = 15.0, .size.height = 80.0 };
    ```
+   
+ * Use p_ prefix for private methods
+ 
+ ```objc
+- (void)somePublicMethod:(id)value {}
+- (void)p_somePrivateMethod:(id)value {}
+```
 
 ## Expressions
 
