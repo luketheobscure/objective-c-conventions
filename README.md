@@ -134,6 +134,18 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
+ * Don't ever use [0] when working with arrays. And don't do anything weird with derp[derp.count -1]. Use firstObject and lastObject:
+
+```
+// NO!!
+NSString *firstThing = someArray[0];
+NSString *lastThing = someArray[someArray.count - 1];
+
+// YES!!
+NSString *firstThing = [someArray firstObject];
+NSString *lastThing = [someArray lastObject];
+```
+
 ## Control Structures
 
  * Always surround `if` bodies with curly braces if there is an `else`. Single-line `if` bodies without an `else` should be on the same line as the `if`. 
